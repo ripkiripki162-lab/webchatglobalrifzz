@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CHAT GLOBAL RIFZZ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial Black,Arial,sans-serif}
+html,body{height:100%;overflow:hidden}
+body{background:#fff;background-image:radial-gradient(circle, rgba(0,120,255,.12) 2px, transparent 2px), radial-gradient(circle, rgba(255,0,120,.08) 1px, transparent 1px);background-size:22px 22px, 14px 14px;color:#111;display:flex;flex-direction:column}
+.header{background:#fff;border-bottom:4px solid #111;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:8px}
+.logo{width:46px;height:46px;background:#C2185B;border:3px solid #111;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;box-shadow:4px 4px 0 #111}
+.header-left b{font-size:18px}.header-left b span{color:#C2185B}
+.header-left small{font-size:10px;color:#666;font-family:Arial;font-weight:900}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;max-width:620px;width:100%;margin:0 auto}
+.login-box{flex:1;display:flex;flex-direction:column;justify-content:center;padding:14px;overflow-y:auto}
+.login-box h1{font-size:36px;line-height:1;text-align:center;text-shadow:4px 4px 0 #FFD700}
+.login-box h1 span{color:#C2185B}
+.login-box .sub{text-align:center;font-size:12px;color:#555;margin:8px 0 12px;font-family:Arial;font-weight:900;line-height:1.5}
+.card{border:4px solid #111;border-radius:22px;padding:16px;box-shadow:6px 6px 0 #111;margin-bottom:12px}
+.card-pink{background:#C2185B;color:#fff}
+.card h2{font-size:19px;text-align:center;text-shadow:2px 2px 0 #111}
+input{width:100%;padding:15px;border-radius:14px;border:3px solid #111;background:#fff;color:#111;outline:none;font-size:15px;margin-top:10px;font-weight:900;font-family:Arial}
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-weight:900;font-size:14px;margin-top:10px;cursor:pointer}
+.btn-black{background:#111;color:#fff;border:3px solid #111}
+.white-box{background:#fff;border:4px solid #111;border-radius:16px;padding:12px;margin-top:12px;box-shadow:4px 4px 0 #111;color:#111;text-align:center}
+.white-box p{color:#111 !important;font-size:11px !important;line-height:1.7;font-family:Arial;font-weight:900}
+.white-box b{color:#C2185B;font-size:13px}
+.chat-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.msg-row{display:flex;flex-direction:column;max-width:88%}
+.msg-row.mine{align-self:flex-end;align-items:flex-end}
+.msg-row.other{align-self:flex-start;align-items:flex-start}
+.msg-name{font-size:11px;font-weight:900;font-family:Arial;margin:0 6px 3px}
+.msg-name .dev{background:#FFD700;color:#111;border:2px solid #111;padding:1px 6px;border-radius:8px;font-size:9px;margin-left:4px}
+.msg-bubble{padding:11px 13px;border-radius:18px;font-size:14px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;font-family:Arial;font-weight:700;box-shadow:4px 4px 0 #111;border:3px solid #111;max-width:100%;position:relative}
+.msg-row.mine .msg-bubble{background:#00C853;color:#fff;border-bottom-right-radius:4px}
+.msg-row.other .msg-bubble{background:#FF4081;color:#fff;border-bottom-left-radius:4px}
+.msg-bubble.langgar{background:#FF1744 !important}
+.msg-bubble.tagged{animation:kedip 1s infinite;border-color:#FFD700 !important;box-shadow:0 0 0 4px #FFD700, 4px 4px 0 #111 !important}
+@keyframes kedip{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.msg-bubble img{max-width:100%;border-radius:12px;border:2px solid #111;display:block;margin-top:6px}
+.msg-bubble .sticker{font-size:42px}
+.msg-time{font-size:10px;color:#888;font-family:Arial;font-weight:800;margin:3px 6px}
+.tag{color:#FFD700;background:#111;padding:1px 6px;border-radius:8px;font-weight:900}
+.tag-me{background:#FFD700;color:#111;border:2px solid #111;padding:1px 6px;border-radius:8px}
+.langgar-label{background:#FFD700;color:#111;border:2px solid #111;padding:2px 6px;border-radius:8px;font-size:10px;font-family:Arial;font-weight:900;display:inline-block;margin-bottom:5px}
+.del-btn{background:#111;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:11px;cursor:pointer;position:absolute;top:-8px;right:-8px;display:none}
+.del-btn.show{display:block}
+.tag-popup{position:absolute;bottom:70px;left:12px;right:12px;background:#fff;border:3px solid #111;border-radius:14px;box-shadow:5px 5px 0 #111;padding:8px;display:none;z-index:20}
+.tag-popup.show{display:block}
+.tag-popup button{display:block;width:100%;text-align:left;background:#fff;border:2px solid #111;border-radius:10px;padding:10px;margin-top:5px;font-weight:900;cursor:pointer;font-family:Arial}
+.input-area{background:#fff;border-top:4px solid #111;padding:8px;display:flex;gap:6px;align-items:center;flex-shrink:0;position:relative}
+.input-area input{flex:1;margin:0;padding:13px}
+.icon-mid{width:48px;height:48px;border-radius:50%;border:3px solid #111;cursor:pointer;font-size:20px;flex-shrink:0;box-shadow:3px 3px 0 #111}
+.btn-photo{background:#FFD700}
+.btn-sticker{background:#fff}
+.btn-send{background:#C2185B;color:#fff;width:52px;height:52px;border-radius:50%;border:3px solid #111;font-size:20px;cursor:pointer;flex-shrink:0;box-shadow:3px 3px 0 #111}
+.sticker-box{position:absolute;bottom:70px;left:12px;right:12px;background:#fff;border:3px solid #111;border-radius:16px;box-shadow:5px 5px 0 #111;padding:10px;display:none;z-index:20}
+.sticker-box.show{display:block}
+.sticker-box .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.sticker-box button{font-size:32px;background:#fff;border:2px solid #111;border-radius:12px;padding:6px;cursor:pointer}
+.online-box{background:#fff;border:3px solid #111;border-radius:14px;padding:10px;text-align:center;font-size:11px;font-family:Arial;font-weight:900;margin:0 12px 6px;box-shadow:3px 3px 0 #111;cursor:pointer}
+.dev-bar{background:#FFD700;border:3px solid #111;border-radius:14px;padding:8px;margin:0 12px 6px;display:none;text-align:center;box-shadow:3px 3px 0 #111}
+.dev-bar.show{display:block}
+.dev-bar button{background:#FF1744;color:#fff;border:2px solid #111;border-radius:10px;padding:8px 12px;font-weight:900;font-size:11px;cursor:pointer;margin:0 3px}
+/* POPUP DI-TAG - GEDE DI TENGAH */
+.tag-notif{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#FFD700;border:5px solid #111;border-radius:22px;padding:20px;text-align:center;box-shadow:10px 10px 0 #111;z-index:300;width:90%;max-width:360px;transition:transform .2s}
+.tag-notif.show{transform:translate(-50%,-50%) scale(1)}
+.tag-notif h2{font-size:20px}
+.tag-notif p{font-family:Arial;font-weight:900;font-size:13px;margin:8px 0;line-height:1.5}
+.tag-notif button{background:#111;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:900;width:100%;margin-top:8px;cursor:pointer}
+.tag-notif button.btn2{background:#C2185B}
+</style>
+</head>
+<body>
+<div class="header" id="topHeader" style="display:none">
+  <div class="header-left">
+    <div class="logo">𝐑</div>
+    <div><b>𝐂𝐇𝐀𝐓 𝐆𝐋𝐎𝐁𝐀𝐋 <span>𝐑𝐈𝐅𝐙𝐙</span></b><br><small><span id="onlineCount">1</span> ONLINE • DEV RIFZZ STORE</small></div>
+  </div>
+  <button onclick="logout()" style="background:#111;color:#fff;border:3px solid #111;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer">KELUAR</button>
+</div>
+
+<div class="main">
+  <div class="login-box" id="loginBox">
+    <h1>𝐂𝐇𝐀𝐓 𝐆𝐋𝐎𝐁𝐀𝐋<br><span>𝐑𝐈𝐅𝐙𝐙</span></h1>
+    <p class="sub">CHAT GLOBAL! BISA DILIHAT DI SEMUA HP!<br>KETIK, TAG, KIRIM FOTO, KIRIM STIKER!</p>
+    <div class="card card-pink"><h2>MASUK CHAT GLOBAL</h2>
+      <input id="loginUsn" placeholder="MASUKAN USN LU" autocomplete="off">
+      <input id="loginPw" type="password" placeholder="MASUKAN PW LU" autocomplete="off">
+      <button class="btn btn-black" onclick="doLogin()">MASUK CHAT GLOBAL</button>
+      <div class="white-box">
+        <p>BEBAS MAU KASIH KODE APA AJA!<br>NAMA BEBAS BISA LANGSUNG MASUK!<br>USAHAKAN PAKE NAMA LU!</p>
+        <p style="margin-top:8px"><b>💎 DEVELOPER RIFZZ STORE 💎</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="chatBox" style="flex:1;display:none;flex-direction:column;overflow:hidden">
+    <div class="online-box" id="onlineBox" onclick="showOnline()">LOADING CHAT GLOBAL... - KLIK BUAT LIAT SIAPA YANG ONLINE</div>
+    <div class="dev-bar" id="devBar">
+      <b>👑 MODE DEV RIFZZ</b><br>
+      <button onclick="hapusSemuaChat()">🗑️ HAPUS SEMUA CHAT</button>
+      <button onclick="hapusLanggarSaja()" style="background:#111">🧹 HAPUS YANG LANGGAR</button>
+    </div>
+    <div class="chat-list" id="chatList"></div>
+    <div class="tag-popup" id="tagPopup"></div>
+    <div class="sticker-box" id="stickerBox">
+      <div style="font-size:13px;margin-bottom:8px;text-align:center">PILIH STIKER!</div>
+      <div class="grid" id="stickerGrid"></div>
+    </div>
+    <div class="input-area">
+      <input id="chatInput" placeholder="Ketik... @ buat ngetag..." autocomplete="off" oninput="checkTag()" onkeypress="if(event.key==='Enter')sendChat()">
+      <button class="icon-mid btn-photo" onclick="document.getElementById('photoInput').click()">📸</button>
+      <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="sendPhoto(event)">
+      <button class="icon-mid btn-sticker" onclick="toggleSticker()">😀</button>
+      <button class="btn-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP KALO DI-TAG - GEDE + GETAR + BUNYI -->
+<div class="tag-notif" id="tagNotif">
+  <h2>🔔 LU DI-TAG!</h2>
+  <p id="tagNotifText">Ada yang ngetag lu!</p>
+  <p style="font-size:11px;color:#666">Chat-nya kedip-kedip kuning di bawah!</p>
+  <button onclick="tutupTagNotif()">👀 LIHAT CHAT!</button>
+  <button class="btn2" onclick="tutupTagNotif()">TUTUP</button>
+</div>
+
+<script>
+let TOPIC='rifzz-global-chat-2026';
+let myUsn=''; let myPw=''; let isDev=false;
+// UDAH GAK ADA NAMA PALSU! CUMA ORANG YANG BENERAN MASUK YANG MUNCUL!
+let allUsers=[]; // Kosong di awal, baru keisi kalo ada yang masuk!
+let onlineUsers={}; // Simpan siapa yang online + kapan terakhir aktif
+let seenIds=new Set();
+let kataKasar=['kontol','kon tol','kont*l','kon*l','anjing','anj*ng','a*u','bangsat','bajingan','tolol','goblok','memek','pepek','ngentot','ngent*t','asu','babi','jancok','janc*k','perek','lonte','tai','taik','bego','kampret'];
+function cekKasar(text){
+  let l=text.toLowerCase();
+  for(let k of kataKasar){ if(l.includes(k)) return true; }
+  if(l.includes('kon') && l.includes('tol')) return true;
+  if(l.includes('anj')) return true;
+  return false;
+}
+function sensorKata(text){
+  let out=text;
+  kataKasar.forEach(k=>{ let re=new RegExp(k.replace(/\*/g,'.'),'gi'); out=out.replace(re,'***'); });
+  out=out.replace(/kon\w*tol/gi,'***').replace(/anj\w*ng/gi,'***').replace(/ngent\w*t/gi,'***').replace(/mem\w*k/gi,'***');
+  return out;
+}
+function doLogin(){
+  let u=document.getElementById('loginUsn').value.trim();
+  let p=document.getElementById('loginPw').value.trim();
+  if(!u){ alert('Isi USN dulu!'); return; }
+  if(!p){ alert('Isi PW dulu! Bebas mau kasih kode apa aja!'); return; }
+  myUsn=u.toUpperCase(); myPw=p;
+  if(myUsn==='RIFZZ' && myPw==='35'){ isDev=true; }
+  else if(myUsn==='RIFZZ' && myPw!=='35'){ alert('Kalo USN RIFZZ, PW harus 35! Itu akun DEV!'); return; }
+  else { isDev=false; }
+  // CUMA MASUKIN NAMA SENDIRI, BUKAN NAMA PALSU!
+  allUsers=[myUsn];
+  onlineUsers[myUsn]=Date.now();
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('topHeader').style.display='flex';
+  document.getElementById('chatBox').style.display='flex';
+  if(isDev) document.getElementById('devBar').classList.add('show');
+  document.getElementById('chatList').innerHTML='<div style="text-align:center;font-family:Arial;font-weight:900;font-size:12px;color:#888;padding:20px">SELAMAT DATANG '+myUsn+'!'+(isDev?' 👑 DEV!':'')+'<br>BELOM ADA YANG ONLINE SELAIN LU! Kalo ada yang masuk, nama dia baru muncul di tag!</div>';
+  // Kirim sinyal JOIN - biar HP orang tau lu masuk!
+  kirimKeServer({type:'join', usn:myUsn, text:myUsn+' MASUK!', time:Date.now()});
+  startPolling();
+  setInterval(startPolling, 3000);
+  // Kirim heartbeat tiap 10 detik biar ketauan masih online
+  setInterval(()=>{ kirimKeServer({type:'heartbeat', usn:myUsn, time:Date.now()}); }, 10000);
+}
+function sendSystem(text){ fetch('https://ntfy.sh/'+TOPIC, {method:'POST', body: text, headers:{'Title':'SYSTEM'}}).catch(()=>{}); }
+async function kirimKeServer(data){
+  try{ await fetch('https://ntfy.sh/'+TOPIC, {method:'POST', body: JSON.stringify(data), headers:{'Content-Type':'application/json','Title':data.usn}}); }
+  catch(e){ let local=JSON.parse(localStorage.getItem('rifzz_chat_local')||'[]'); local.push(data); localStorage.setItem('rifzz_chat_local', JSON.stringify(local)); }
+}
+async function sendChat(){
+  let inp=document.getElementById('chatInput');
+  let txt=inp.value.trim(); if(!txt) return;
+  inp.value=''; document.getElementById('tagPopup').classList.remove('show');
+  let isLanggar=cekKasar(txt);
+  let txtKirim=isLanggar ? sensorKata(txt) : txt;
+  // Cek siapa yang di-tag, biar dia dikasih notif khusus
+  let taggedUsers=[];
+  let matches=txt.match(/@(\w+)/g);
+  if(matches){ matches.forEach(m=>{ taggedUsers.push(m.slice(1).toUpperCase()); }); }
+  let data={type:'text', usn:myUsn, text:txtKirim, tagged:taggedUsers, langgar:isLanggar, time:Date.now()};
+  await kirimKeServer(data); tampilkanPesan(data,true);
+  if(isLanggar){ alert('⚠️ LU LANGGAR! KATA KASAR LU UDAH DI-SENSOR & KETAUAN DI SEMUA HP!'); }
+}
+async function sendPhoto(e){
+  let f=e.target.files[0]; if(!f) return;
+  let reader=new FileReader();
+  reader.onload=async function(){
+    let compressed=await kompresFoto(reader.result);
+    let data={type:'photo', usn:myUsn, text:'[FOTO]', img:compressed, tagged:[], langgar:false, time:Date.now()};
+    await kirimKeServer(data); tampilkanPesan(data,true);
+  };
+  reader.readAsDataURL(f); e.target.value='';
+}
+function kompresFoto(dataUrl){
+  return new Promise(res=>{
+    let img=new Image();
+    img.onload=()=>{
+      let c=document.createElement('canvas'); let max=600; let w=img.width, h=img.height;
+      if(w>max){ h=h*max/w; w=max; }
+      c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+      res(c.toDataURL('image/jpeg',0.6));
+    };
+    img.src=dataUrl;
+  });
+}
+let stickers=['😂','🔥','😍','😭','😎','🤣','🥰','😡','👍','👎','🙏','💪','🎉','❤️','💎','👑','😈','🤖','📸','💰','⚡','✨','🥹','😱','🫡','🤝'];
+function toggleSticker(){
+  let box=document.getElementById('stickerBox'); box.classList.toggle('show');
+  if(box.classList.contains('show')){ document.getElementById('stickerGrid').innerHTML=stickers.map(s=>'<button onclick="sendSticker(\''+s+'\')">'+s+'</button>').join(''); }
+}
+async function sendSticker(s){
+  document.getElementById('stickerBox').classList.remove('show');
+  let data={type:'sticker', usn:myUsn, text:s, tagged:[], langgar:false, time:Date.now()};
+  await kirimKeServer(data); tampilkanPesan(data,true);
+}
+// TAG - CUMA ORANG YANG BENERAN ONLINE!
+function checkTag(){
+  let inp=document.getElementById('chatInput'); let v=inp.value; let atPos=v.lastIndexOf('@');
+  let popup=document.getElementById('tagPopup');
+  if(atPos===-1){ popup.classList.remove('show'); return; }
+  let query=v.slice(atPos+1).toLowerCase();
+  // Filter dari allUsers yang beneran online, bukan nama palsu!
+  let filtered=allUsers.filter(u=>u.toLowerCase().includes(query));
+  if(!filtered.length){
+    popup.innerHTML='<div style="font-size:12px;font-weight:900">BELOM ADA YANG ONLINE SELAIN LU!</div><div style="font-size:11px;font-family:Arial;font-weight:800;margin-top:5px">Tunggu ada yang masuk dulu, baru bisa di-tag!</div>';
+    popup.classList.add('show');
+    return;
+  }
+  popup.innerHTML='<div style="font-size:12px;font-weight:900">TAG TEMEN LU - YANG ONLINE:</div>'+filtered.map(u=>'<button onclick="pilihTag(\''+u+'\')">@<b>'+u+'</b> '+(u===myUsn?'(LU SENDIRI)':'• ONLINE')+'</button>').join('');
+  popup.classList.add('show');
+}
+function pilihTag(u){
+  let inp=document.getElementById('chatInput'); let v=inp.value; let atPos=v.lastIndexOf('@');
+  inp.value=v.slice(0,atPos)+'@'+u+' '; document.getElementById('tagPopup').classList.remove('show'); inp.focus();
+}
+function showOnline(){
+  let list=Object.keys(onlineUsers).filter(u=>{
+    // Online kalo terakhir aktif < 1 menit lalu
+    return Date.now()-onlineUsers[u] < 60000;
+  });
+  if(!list.length) list=[myUsn];
+  alert('YANG LAGI ONLINE SEKARANG ('+list.length+' ORANG):\n\n• '+list.join('\n• ')+'\n\nCuma orang ini yang bisa di-tag! Kalo belum masuk, nama dia nggak akan muncul!');
+}
+// BUNYI + GETAR KALO DI-TAG
+function bunyiTag(){
+  try{
+    // Getar HP
+    if(navigator.vibrate) navigator.vibrate([200,100,200,100,200]);
+    // Bunyi TIT
+    let ctx=new (window.AudioContext||window.webkitAudioContext)();
+    let osc=ctx.createOscillator(); let gain=ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value=880; osc.type='sine';
+    gain.gain.value=0.3;
+    osc.start(); setTimeout(()=>{ osc.stop(); }, 300);
+    setTimeout(()=>{
+      let osc2=ctx.createOscillator(); let gain2=ctx.createGain();
+      osc2.connect(gain2); gain2.connect(ctx.destination);
+      osc2.frequency.value=880; osc2.type='sine'; gain2.gain.value=0.3;
+      osc2.start(); setTimeout(()=>{ osc2.stop(); }, 300);
+    }, 400);
+  }catch(e){}
+}
+function tampilkanPesan(data, isLocal){
+  if(data.time && seenIds.has(data.time+'-'+data.usn)) return;
+  if(data.time) seenIds.add(data.time+'-'+data.usn);
+  // JOIN / HEARTBEAT - TAMBAHIN KE LIST ONLINE, BUKAN NAMA PALSU!
+  if(data.type==='join' || data.type==='heartbeat'){
+    if(data.usn && data.usn!==myUsn){
+      if(!allUsers.includes(data.usn)) allUsers.push(data.usn);
+      onlineUsers[data.usn]=Date.now();
+      updateOnlineUI();
+    }
+    if(data.type==='join' && data.usn!==myUsn){
+      document.getElementById('onlineBox').innerHTML='🟢 <b>'+data.usn+'</b> BARU AJA MASUK! SEKARANG BISA DI-TAG!';
+      setTimeout(updateOnlineUI, 4000);
+    }
+    return;
+  }
+  if(data.type==='delete-one'){ let el=document.getElementById('msg-'+data.target); if(el) el.remove(); return; }
+  if(data.type==='delete-all'){ document.getElementById('chatList').innerHTML='<div style="text-align:center;font-family:Arial;font-weight:900;font-size:12px;color:#888;padding:20px">CHAT UDAH DIHAPUS SEMUA SAMA DEV RIFZZ!</div>'; seenIds.clear(); return; }
+  if(data.type==='system'){ return; }
+  let list=document.getElementById('chatList');
+  if(list.innerHTML.includes('SELAMAT DATANG')) list.innerHTML='';
+  if(list.innerHTML.includes('UDAH DIHAPUS')) list.innerHTML='';
+  // Kalo ada yang chat, berarti dia online, masukin ke list!
+  if(data.usn && data.usn!==myUsn && !allUsers.includes(data.usn)){
+    allUsers.push(data.usn);
+    onlineUsers[data.usn]=Date.now();
+    updateOnlineUI();
+  }
+  if(data.usn) onlineUsers[data.usn]=Date.now();
+  let isMine=data.usn===myUsn;
+  let isDevMsg=data.usn==='RIFZZ';
+  // Cek di-tag: dari list tagged ATAU dari teks @nama
+  let isTagged=false;
+  if(data.tagged && data.tagged.includes(myUsn)) isTagged=true;
+  if(data.text && data.text.includes('@'+myUsn)) isTagged=true;
+  let row=document.createElement('div');
+  row.className='msg-row '+(isMine?'mine':'other');
+  row.id='msg-'+data.time;
+  let isi='';
+  if(data.type==='photo'){ isi='<img src="'+data.img+'">'; }
+  else if(data.type==='sticker'){ isi='<span class="sticker">'+data.text+'</span>'; }
+  else { isi=formatText(data.text); }
+  let langgarHtml=data.langgar ? '<div class="langgar-label">⚠️ LANGGAR - KATA KASAR! UDAH DI-SENSOR!</div>' : '';
+  let delBtn=isDev ? '<button class="del-btn show" onclick="hapusSatuChat('+data.time+',\''+data.usn+'\')">✕</button>' : '';
+  let tagNoteHtml=isTagged ? '<div style="background:#FFD700;color:#111;border:2px solid #111;border-radius:8px;padding:2px 6px;font-size:10px;font-family:Arial;font-weight:900;display:inline-block;margin-bottom:4px">🔔 LU DI-TAG SAMA '+data.usn+'!</div>' : '';
+  row.innerHTML='<div class="msg-name">'+(isMine?'LU':data.usn)+(isDevMsg?'<span class="dev">DEV</span>':'')+'</div>'+tagNoteHtml+'<div class="msg-bubble '+(data.langgar?'langgar':'')+' '+(isTagged?'tagged':'')+'">'+langgarHtml+isi+delBtn+'</div><div class="msg-time">'+new Date(data.time).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})+(data.langgar?' • ⚠️ LANGGAR':'')+'</div>';
+  list.appendChild(row);
+  list.scrollTop=list.scrollHeight;
+  // KALO DI-TAG, KASIH NOTIF GEDE + GETAR + BUNYI!
+  if(isTagged && !isMine){
+    bunyiTag();
+    document.getElementById('tagNotifText').innerHTML='<b>'+data.usn+'</b> NGETAG LU!<br>Katanya: "'+(data.text||'').slice(0,60)+'"<br><br>Klik LIHAT CHAT buat bales!';
+    document.getElementById('tagNotif').classList.add('show');
+    document.getElementById('onlineBox').innerHTML='🔔 LU DI-TAG SAMA <b>'+data.usn+'</b>! CEK BAWAH! CHAT-NYA KEDIP-KEDIP KUNING!';
+    document.title='🔔 LU DI-TAG! - CHAT GLOBAL RIFZZ';
+  }
+}
+function tutupTagNotif(){
+  document.getElementById('tagNotif').classList.remove('show');
+  document.title='CHAT GLOBAL RIFZZ';
+  document.getElementById('chatList').scrollTop=document.getElementById('chatList').scrollHeight;
+  updateOnlineUI();
+}
+function updateOnlineUI(){
+  let list=Object.keys(onlineUsers).filter(u=>Date.now()-onlineUsers[u] < 60000);
+  if(!list.includes(myUsn)) list.push(myUsn);
+  document.getElementById('onlineBox').innerHTML='CHAT GLOBAL RIFZZ - ONLINE: <b>'+list.join(', ')+'</b> ('+list.length+' ORANG) • KLIK BUAT LIAT ONLINE • Kalo lu chat di KANAN HIJAU, di HP orang KIRI PINK!';
+  document.getElementById('onlineCount').innerText=list.length;
+}
+function formatText(t){
+  if(!t) return '';
+  let esc=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  esc=esc.replace(/@(\w+)/g, function(m,u){ if(u.toUpperCase()===myUsn) return '<span class="tag-me">@'+u+'</span>'; return '<span class="tag">@'+u+'</span>'; });
+  return esc;
+}
+async function hapusSatuChat(time, usn){
+  if(!isDev){ alert('Cuma DEV RIFZZ yang bisa hapus!'); return; }
+  if(!confirm('Hapus chat dari '+usn+' ini?')) return;
+  document.getElementById('msg-'+time)?.remove();
+  await kirimKeServer({type:'delete-one', usn:myUsn, target:time, time:Date.now()});
+}
+async function hapusSemuaChat(){
+  if(!isDev) return;
+  if(!confirm('HAPUS SEMUA CHAT DI SEMUA HP?')) return;
+  document.getElementById('chatList').innerHTML='<div style="text-align:center;font-family:Arial;font-weight:900;font-size:12px;color:#888;padding:20px">CHAT UDAH DIHAPUS SEMUA SAMA DEV RIFZZ!</div>';
+  seenIds.clear();
+  await kirimKeServer({type:'delete-all', usn:myUsn, time:Date.now()});
+}
+async function hapusLanggarSaja(){
+  if(!isDev) return;
+  document.querySelectorAll('.msg-bubble.langgar').forEach(el=>{ el.closest('.msg-row').remove(); });
+  alert('Chat yang LANGGAR udah dihapus di HP lu!');
+}
+async function startPolling(){
+  try{
+    let r=await fetch('https://ntfy.sh/'+TOPIC+'/json?since=10m');
+    let txt=await r.text();
+    let lines=txt.split('\n').filter(Boolean);
+    lines.forEach(line=>{
+      try{
+        let j=JSON.parse(line);
+        if(j.message){
+          let d=null;
+          try{ d=JSON.parse(j.message); }catch(e){ d={type:'text', usn:j.title||'USER', text:j.message, tagged:[], langgar:false, time:j.time*1000}; }
+          if(d && d.usn){
+            if(d.usn!==myUsn || d.type==='delete-one' || d.type==='delete-all'){ tampilkanPesan(d,false); }
+          }
+        }
+      }catch(e){}
+    });
+    updateOnlineUI();
+  }catch(e){}
+}
+function logout(){ location.reload(); }
+</script>
+</body>
+</html>
